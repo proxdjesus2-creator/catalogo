@@ -4,64 +4,76 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catálogo</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="icon" href="img/logo.png">
 <style>
-body{margin:0;font-family:Inter,Arial;background:#0f1724;color:#f8fafc;}
-header{display:flex;align-items:center;padding:15px;background:#111827;}
-header img{height:60px;margin-right:12px;}
-header h1{font-size:28px;color:#3b82f6;}
-.wrap{max-width:1100px;margin:20px auto;padding:0 12px;}
-.search-bar{margin:12px 0;}
-input,select{padding:8px;border-radius:8px;border:none;background:#0b1220;color:#fff;width:100%;}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
-.product{background:#111827;padding:12px;border-radius:12px;cursor:pointer;transition:0.3s;}
-.product:hover{transform:scale(1.03);}
-.product img{width:100%;height:180px;object-fit:contain;border-radius:8px;margin-bottom:6px;}
-.product h3{font-size:16px;margin-bottom:4px;}
-.product p{font-size:13px;color:#9ca3af;margin-bottom:4px;}
-.price{font-weight:700;margin-bottom:6px;}
-.add-cart{background:#06b6d4;color:#052022;padding:6px 10px;border-radius:8px;border:none;cursor:pointer;width:100%;}
-#cartBtn{position:fixed;bottom:20px;right:20px;background:#3b82f6;color:#fff;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
-#cartModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;}
-#cartContent{background:#111827;padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:80%;overflow-y:auto;}
-.cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #222;}
-.cart-item img{width:50px;height:50px;object-fit:contain;border-radius:6px;margin-right:6px;}
-.cart-item div{flex:1;}
-button{cursor:pointer;}
-</style>
+  :root{
+    --bg:#ffffff; --primary:#06b6d4; --secondary:#ef4444; --accent:#facc15; --text:#111827;
+  }
+  *{box-sizing:border-box;font-family:Arial, sans-serif;margin:0;padding:0;}
+  body{background:#0f2139;color:var(--text);padding:10px;}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  header img{height:60px;}
+  .categories{position:relative;}
+  .cat-btn{padding:8px 12px;background:var(--primary);color:#f3f3f3;border:none;border-radius:6px;cursor:pointer;}
+  .cat-list{position:absolute;top:40px;left:0;background:#fff;border:1px solid #ddd;border-radius:6px;display:none;flex-direction:column;min-width:150px;z-index:10;}
+  .cat-list button{padding:6px 10px;text-align:left;border:none;background:none;cursor:pointer;}
+  .cat-list button:hover{background:#ffffff;}
+  .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+  .product{background:rgb(255, 255, 255);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);padding:10px;text-align:center;}
+  .product img{width:100%;height:180px;object-fit:contain;margin-bottom:8px;border-radius:6px;}
+  .product h3{font-size:16px;margin-bottom:4px;}
+  .product p{font-size:14px;margin-bottom:6px;color:#555;}
+  .product .price{font-weight:700;margin-bottom:6px;}
+  .btn{padding:6px 10px;background:var(--primary);color:#ffffff;border:none;border-radius:6px;cursor:pointer;}
+  #cartBtn{position:fixed;bottom:20px;right:20px;background:var(--secondary);color:#fff;border:none;padding:12px 14px;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+  #cartModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:50;}
+  #cartContent{background:#ffffff;width:90%;max-width:400px;padding:16px;border-radius:10px;max-height:80%;overflow-y:auto;position:relative;}
+  #cartContent h2{margin-bottom:10px;}
+  .closeCart{position:absolute;top:8px;right:12px;cursor:pointer;font-size:18px;}
+  .cart-item{display:flex;gap:8px;margin-bottom:10px;align-items:center;}
+  .cart-item img{width:60px;height:50px;object-fit:contain;border-radius:6px;}
+  .cart-item .info{flex:1;}
+  .cart-item input{width:50px;padding:4px;border-radius:6px;border:1px solid #ffffff;}
+  .cart-item button{margin-top:4px;background:#ef4444;color:#fff;padding:4px 8px;border-radius:6px;border:none;cursor:pointer;}
+  label{font-size:14px;margin-top:6px;display:block;}
+  input,textarea{width:100%;padding:6px;margin-top:4px;margin-bottom:8px;border-radius:6px;border:1px solid #ffffff;}
+header img {
+  height: 100px; /* aumenta o disminuye según quieras */
+}
+  </style>
 </head>
 <body>
 
 <header>
-<img src="img/logo.png" alt="Logo">
-<h1>Catálogo</h1>
+  <img src="img/logo.png" alt="Logo" >
+  <div class="categories">
+    <button class="cat-btn">Categorías ▼</button>
+    <div class="cat-list" id="catList"></div>
+  </div>
 </header>
 
-<div class="wrap">
-<input type="text" id="search" class="search-bar" placeholder="Buscar productos...">
-<div class="products" id="productList"></div>
-</div>
+<div class="products" id="productGrid"></div>
 
-<button id="cartBtn"><i class="fa fa-shopping-cart"></i></button>
+<button id="cartBtn">🛒</button>
 
 <div id="cartModal">
   <div id="cartContent">
+    <span class="closeCart">✖</span>
     <h2>Carrito</h2>
     <div id="cartItems"></div>
-    <div>Total: <span id="totalPrice">Q0.00</span></div>
     <label>Nombre cliente</label>
     <input id="clientName" placeholder="Ej: Juan Pérez">
-    <label>Dirección / Observaciones</label>
-    <textarea id="notes" rows="3" placeholder="Apto, barrio, hora..."></textarea>
-    <button id="sendWhats" style="background:#06b6d4;padding:8px 12px;border-radius:8px;border:none;color:#052022;margin-top:8px;width:100%">Enviar por WhatsApp</button>
-    <button id="closeCart" style="background:#ef4444;padding:8px 12px;border-radius:8px;border:none;color:#fff;margin-top:8px;width:100%">Cerrar</button>
+    <label>Notas / Dirección</label>
+    <textarea id="notes" rows="3"></textarea>
+    <button id="sendWhats" class="btn">Enviar por WhatsApp</button>
+    <button id="clearCart" class="btn" style="background:#900000;margin-top:6px;">Vaciar carrito</button>
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script>
-const PHONE="50241811434"; // tu número
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCRzvwkeV8ceVnP5X2gA74a34iuClsc2qY",
@@ -73,89 +85,148 @@ const firebaseConfig = {
   appId: "1:100540032907:web:a6acac793ff5c85884318e",
   measurementId: "G-PZK0757PMK"
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const PHONE="50241811434";
 
-let products=[]; let cart=[];
+let products=[];
+let cart=[];
 
-function currency(v){return 'Q'+v.toFixed(2);}
+const productGrid=document.getElementById("productGrid");
+const cartBtn=document.getElementById("cartBtn");
+const cartModal=document.getElementById("cartModal");
+const cartItems=document.getElementById("cartItems");
+const closeCart=document.querySelector(".closeCart");
+const sendWhats=document.getElementById("sendWhats");
+const clearCartBtn=document.getElementById("clearCart");
+const clientName=document.getElementById("clientName");
+const notes=document.getElementById("notes");
+const catBtn=document.querySelector(".cat-btn");
+const catList=document.getElementById("catList");
 
-function loadProducts(){
-  db.ref('products').once('value').then(snapshot=>{
-    products=[];
-    snapshot.forEach(s=>{products.push({...s.val(), id:s.key});});
-    renderProducts();
+function renderProducts(filterCategory=null){
+  productGrid.innerHTML="";
+  const filtered=filterCategory? products.filter(p=>p.category==filterCategory):products;
+  filtered.forEach(p=>{
+    const div=document.createElement("div");
+    div.className="product";
+    div.innerHTML=`
+      <img src="${p.img}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+      <div class="price">Q${p.price.toFixed(2)}</div>
+      <button class="btn" data-id="${p.id}">Añadir al carrito</button>
+    `;
+    productGrid.appendChild(div);
   });
-}
 
-function renderProducts(){
-  const list = document.getElementById('productList');
-  const query = document.getElementById('search').value.toLowerCase();
-  list.innerHTML='';
-  products.forEach(p=>{
-    if(p.name.toLowerCase().includes(query) || (p.category && p.category.toLowerCase().includes(query))){
-      const div=document.createElement('div'); div.className='product';
-      div.innerHTML=`<img src="${p.img}" alt="${p.name}"><h3>${p.name}</h3><p>${p.desc||''}</p><div>Precio: ${currency(p.price)}</div>${p.pack?'<div>Unidades por fardo: '+p.pack+'</div>':''}<input type="number" min="0.5" step="0.5" value="1" style="width:60px;margin-top:4px"><button class="add-cart">Agregar al carrito</button>`;
-      div.querySelector('.add-cart').onclick=()=>{
-        const qty=parseFloat(div.querySelector('input').value)||1;
-        addToCart(p.id,qty);
-      };
-      list.appendChild(div);
+  // Botones añadir al carrito
+  document.querySelectorAll(".product button").forEach(btn=>{
+    btn.onclick=function(){
+      const p=products.find(x=>x.id==this.dataset.id);
+      const qty=parseFloat(prompt(`Cantidad de fardos de ${p.name}:`, "1")) || 1;
+      const existing=cart.find(c=>c.id==p.id);
+      if(existing) existing.qty+=qty; else cart.push({id:p.id,p,qty});
+      renderCart();
+      const toast=document.createElement("div");
+      toast.textContent=`✅ ${p.name} agregado al carrito`;
+      toast.style.position='fixed';
+      toast.style.bottom='80px'; toast.style.right='20px';
+      toast.style.background='#06b6d4'; toast.style.color='#fff';
+      toast.style.padding='10px 14px'; toast.style.borderRadius='6px';
+      document.body.appendChild(toast);
+      setTimeout(()=>toast.remove(),2000);
     }
   });
 }
 
-function addToCart(id,qty){
-  const existing=cart.find(x=>x.id===id);
-  if(existing){existing.qty+=qty;}else{cart.push({id,qty});}
-  renderCartItems();
-}
-
-function renderCartItems(){
-  const container=document.getElementById('cartItems'); container.innerHTML='';
-  let total=0;
+function renderCart(){
+  cartItems.innerHTML="";
+  if(cart.length===0){ cartItems.innerHTML="<div>Carrito vacío</div>"; return; }
   cart.forEach(item=>{
-    const p=products.find(x=>x.id===item.id);
-    if(!p) return;
-    let subtotal=p.price*item.qty;
-    let discount=0;
-    if(p.discounts){Object.keys(p.discounts).sort((a,b)=>b-a).forEach(qty=>{if(item.qty>=parseFloat(qty))discount=p.discounts[qty];});}
-    subtotal=subtotal*(1-discount);
-    total+=subtotal;
-    const div=document.createElement('div'); div.className='cart-item';
-    div.innerHTML=`<img src="${p.img}"><div>${p.name} x ${item.qty}${discount?` (-${discount*100}%)`:""}<br>Subtotal: ${currency(subtotal)}</div><button onclick="removeFromCart('${item.id}')">Eliminar</button>`;
-    container.appendChild(div);
+    const div=document.createElement("div");
+    div.className="cart-item";
+    div.innerHTML=`
+      <img src="${item.p.img}">
+      <div class="info">
+        <div>${item.p.name}</div>
+        <div>${item.p.desc}</div>
+        <div>Precio x fardo: Q${item.p.price.toFixed(2)}</div>
+        <input type="number" min="0.5" step="0.5" value="${item.qty}" data-id="${item.id}">
+        <div>Subtotal: Q${(item.p.price*item.qty).toFixed(2)}</div>
+        <button data-remove="${item.id}">Eliminar</button>
+      </div>
+    `;
+    cartItems.appendChild(div);
   });
-  document.getElementById('totalPrice').textContent=currency(total);
+
+  // Cambiar cantidad
+  cartItems.querySelectorAll('input[type="number"]').forEach(inp=>{
+    inp.onchange=function(){
+      const val=parseFloat(this.value);
+      const id=this.dataset.id;
+      const item=cart.find(i=>i.id==id);
+      if(item){ item.qty=val; renderCart(); }
+    }
+  });
+
+  // Eliminar producto
+  cartItems.querySelectorAll('button[data-remove]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.dataset.remove;
+      cart=cart.filter(i=>i.id!=id);
+      renderCart();
+    }
+  });
 }
 
-function removeFromCart(id){cart=cart.filter(x=>x.id!==id); renderCartItems();}
+// Vaciar carrito
+clearCartBtn.onclick=()=>{ cart=[]; renderCart(); }
 
-document.getElementById('cartBtn').onclick=()=>{document.getElementById('cartModal').style.display='flex';}
-document.getElementById('closeCart').onclick=()=>{document.getElementById('cartModal').style.display='none';}
+// Abrir/cerrar carrito
+cartBtn.onclick=()=>cartModal.style.display="flex";
+closeCart.onclick=()=>cartModal.style.display="none";
 
-document.getElementById('sendWhats').onclick=()=>{
-  if(cart.length===0){alert('Carrito vacío');return;}
-  let text='Hola, quiero hacer un pedido:\n';
-  const client=document.getElementById('clientName').value;
-  const notes=document.getElementById('notes').value;
-  if(client) text+='Cliente: '+client+'\n';
-  cart.forEach(item=>{
-    const p=products.find(x=>x.id===item.id);
-    let subtotal=p.price*item.qty;
-    let discount=0;
-    if(p.discounts){Object.keys(p.discounts).sort((a,b)=>b-a).forEach(qty=>{if(item.qty>=parseFloat(qty))discount=p.discounts[qty];});}
-    subtotal=subtotal*(1-discount);
-    text+=`${item.qty} x ${p.name}${discount?` (-${discount*100}%)`:""} - Q${subtotal.toFixed(2)}\n`;
-  });
-  text+='Total: Q'+cart.reduce((t,it)=>{const p=products.find(x=>x.id===it.id); let subtotal=p.price*it.qty; let discount=0;if(p.discounts){Object.keys(p.discounts).sort((a,b)=>b-a).forEach(qty=>{if(it.qty>=parseFloat(qty))discount=p.discounts[qty];});} subtotal=subtotal*(1-discount); return t+subtotal;},0).toFixed(2)+'\n';
-  if(notes) text+='Notas: '+notes+'\n';
-  window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`,'_blank');
+// Enviar WhatsApp
+sendWhats.onclick=()=>{
+  if(cart.length==0){ alert("Carrito vacío"); return; }
+  let text=`Hola, quiero hacer un pedido:\n`;
+  const client=clientName.value.trim();
+  const note=notes.value.trim();
+  if(client) text+=`Cliente: ${client}\n`;
+  cart.forEach(i=>{ text+=`${i.qty} x ${i.p.name} - Q${(i.p.price*i.qty).toFixed(2)}\n`; });
+  if(note) text+=`Notas: ${note}\n`;
+  const total=cart.reduce((acc,i)=>acc+i.p.price*i.qty,0);
+  text+=`Total: Q${total.toFixed(2)}`;
+  window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`,"_blank");
 }
 
-document.getElementById('search').addEventListener('input',()=>{renderProducts();});
+// Categorías
+function renderCategories(){
+  const cats=["Todos los productos",...new Set(products.map(p=>p.category))];
+  catList.innerHTML="";
+  cats.forEach(c=>{
+    const btn=document.createElement("button");
+    btn.textContent=c;
+    btn.onclick=()=>{
+      if(c=="Todos los productos") renderProducts(); else renderProducts(c);
+      catList.style.display="none";
+    }
+    catList.appendChild(btn);
+  });
+}
 
-loadProducts();
+catBtn.onclick=()=>catList.style.display=catList.style.display=="flex"?"none":"flex";
+
+// Firebase productos
+onValue(ref(db,'products'),(snapshot)=>{
+  products=[];
+  snapshot.forEach(child=>{
+    products.push({...child.val(),id:child.key});
+  });
+  renderCategories();
+  renderProducts();
+});
 </script>
 </body>
 </html>
