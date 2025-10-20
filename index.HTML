@@ -115,6 +115,7 @@ function renderProducts(filterCategory=null){
       <h3>${p.name}</h3>
       <p>${p.desc}</p>
       <div class="price">Q${p.price.toFixed(2)}</div>
+      <p><strong>Cantidad por fardo:</strong> ${p.qtyPerFardo} ud</p>
       <button class="btn" data-id="${p.id}">Añadir al carrito</button>
     `;
     productGrid.appendChild(div);
